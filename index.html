@@ -1463,8 +1463,9 @@ footer p {
       body: JSON.stringify(data)
     });
 
-    // Immediate success — hide form, show message inside modal
+    // Immediate success — hide form + label, show message inside modal
     form.style.display = 'none';
+    form.previousElementSibling.style.display = 'none';
     success.style.display = 'block';
   });
 })();
