@@ -1144,9 +1144,9 @@ footer p {
     <p>A custom one-page personal website, built from scratch. One flat price. Done in 5 days.</p>
 
     <div class="world-selector" id="world-selector" style="display:none">
-      <button class="world-tab active" data-world="lisbon">1972 Lisbon Bookshop</button>
+      <button class="world-tab" data-world="lisbon">1972 Lisbon Bookshop</button>
+      <button class="world-tab active" data-world="marrakech">1998 Marrakech Riad</button>
       <button class="world-tab" data-world="milan">1967 Milan Cocktail Bar</button>
-      <button class="world-tab" data-world="marrakech">1998 Marrakech Riad</button>
     </div>
 
     <div class="calling-card" id="calling-card">
@@ -1347,8 +1347,7 @@ footer p {
     if (revealed || !cardInput.value.trim()) return;
     revealed = true;
 
-    var keys = Object.keys(worlds);
-    var startWorld = keys[Math.floor(Math.random() * keys.length)];
+    var startWorld = 'marrakech';
 
     // Show world selector
     worldSelector.style.display = 'flex';
@@ -1357,6 +1356,15 @@ footer p {
     tabs.forEach(function(t) {
       t.classList.toggle('active', t.getAttribute('data-world') === startWorld);
     });
+
+    // Scroll selector to center the active tab
+    setTimeout(function() {
+      var activeTab = worldSelector.querySelector('.world-tab.active');
+      if (activeTab) {
+        var scrollLeft = activeTab.offsetLeft - (worldSelector.offsetWidth / 2) + (activeTab.offsetWidth / 2);
+        worldSelector.scrollLeft = scrollLeft;
+      }
+    }, 10);
 
     // Apply world
     applyWorld(startWorld);
@@ -1397,6 +1405,9 @@ footer p {
       tabs.forEach(function(t) { t.classList.remove('active'); });
       tab.classList.add('active');
       applyWorld(world);
+      // Scroll to center the clicked tab
+      var scrollLeft = tab.offsetLeft - (worldSelector.offsetWidth / 2) + (tab.offsetWidth / 2);
+      worldSelector.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     });
   });
 
