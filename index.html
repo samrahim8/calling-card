@@ -329,6 +329,10 @@ header {
   border: 1px solid rgba(139, 115, 85, 0.12);
 }
 
+.calling-card:not([data-world]) .card-cursor {
+  display: none;
+}
+
 .calling-card:not([data-world]) .card-nav {
   justify-content: center;
 }
@@ -348,6 +352,28 @@ header {
 .calling-card:not([data-world]) .card-input::placeholder {
   color: rgba(44, 36, 22, 0.25);
   font-size: 20px;
+}
+
+/* Fake browsing cursor */
+.card-cursor {
+  position: absolute;
+  width: 14px;
+  height: 18px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.4s;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15));
+}
+
+.card-cursor.visible {
+  opacity: 1;
+}
+
+.card-link-pill.cursor-hover,
+.card-cta-pill.cursor-hover,
+.card-body-cta.cursor-hover {
+  filter: brightness(1.1);
 }
 
 /* Fade-in for revealed elements */
@@ -451,6 +477,11 @@ header {
     0 1px 2px rgba(0, 0, 0, 0.2),
     0 4px 16px rgba(0, 0, 0, 0.25),
     0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.calling-card[data-world="milan"] .card-cursor path {
+  fill: #E8DFD0;
+  stroke: #0F1A14;
 }
 
 .calling-card[data-world="milan"]::before {
@@ -560,6 +591,11 @@ header {
   border: 1px solid #B8662A;
   text-align: left;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20 0L40 20L20 40L0 20Z' fill='none' stroke='%23B8662A' stroke-width='0.5' opacity='0.08'/%3E%3Cpath d='M20 8L32 20L20 32L8 20Z' fill='none' stroke='%231A6B4A' stroke-width='0.5' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+.calling-card[data-world="marrakech"] .card-cursor path {
+  fill: #2A1A0A;
+  stroke: #E8D5B8;
 }
 
 .calling-card[data-world="marrakech"]::before {
@@ -1136,6 +1172,7 @@ footer p {
     </div>
 
     <div class="calling-card" id="calling-card">
+      <svg class="card-cursor" id="card-cursor" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L1 16.5L5.5 12.5L9 19.5L12 18L8.5 11H15L1 1Z" fill="var(--walnut)" stroke="var(--parchment)" stroke-width="1.2"/></svg>
       <!-- Nav bar -->
       <div class="card-nav">
         <input type="text" id="card-input" class="card-input" placeholder="Type your name" maxlength="28" autocomplete="off" spellcheck="false" autofocus>
@@ -1364,6 +1401,9 @@ footer p {
     // Reset input to nav style
     cardInput.placeholder = '';
 
+    // Start the browsing cursor animation
+    setTimeout(startCursor, 800);
+
     // Blur and scroll to center the card
     cardInput.blur();
     setTimeout(function() {
@@ -1389,11 +1429,98 @@ footer p {
       tabs.forEach(function(t) { t.classList.remove('active'); });
       tab.classList.add('active');
       applyWorld(world);
+      // Restart cursor for new world
+      stopCursor();
+      setTimeout(startCursor, 600);
       // Scroll to center the clicked tab
       var scrollLeft = tab.offsetLeft - (worldSelector.offsetWidth / 2) + (tab.offsetWidth / 2);
       worldSelector.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     });
   });
+
+  // Fake browsing cursor animation
+  var cardCursor = document.getElementById('card-cursor');
+  var cursorActive = false;
+  var cursorTimeout = null;
+  var cursorLoop = null;
+
+  function moveCursorTo(el, cb) {
+    var cardRect = card.getBoundingClientRect();
+    var elRect = el.getBoundingClientRect();
+    // Aim for center of element, slightly offset for natural feel
+    var x = (elRect.left - cardRect.left) + (elRect.width * 0.4);
+    var y = (elRect.top - cardRect.top) + (elRect.height * 0.5);
+    cardCursor.style.transition = 'left 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), top 1.2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    cardCursor.style.left = x + 'px';
+    cardCursor.style.top = y + 'px';
+    if (cb) setTimeout(cb, 1300);
+  }
+
+  function highlightEl(el) {
+    el.classList.add('cursor-hover');
+    setTimeout(function() { el.classList.remove('cursor-hover'); }, 900);
+  }
+
+  function getCursorTargets() {
+    var targets = [];
+    var pills = card.querySelectorAll('.card-link-pill');
+    var ctaPill = card.querySelector('.card-cta-pill');
+    var bodyCta = card.querySelector('.card-body-cta');
+    pills.forEach(function(p) { if (p.offsetParent) targets.push(p); });
+    if (ctaPill && ctaPill.offsetParent && ctaPill.style.display !== 'none') targets.push(ctaPill);
+    if (bodyCta && bodyCta.offsetParent && bodyCta.style.display !== 'none') targets.push(bodyCta);
+    return targets;
+  }
+
+  function runCursorLoop() {
+    if (!cursorActive) return;
+    var targets = getCursorTargets();
+    if (targets.length === 0) return;
+    var i = 0;
+    // Shuffle targets for variety
+    targets.sort(function() { return Math.random() - 0.5; });
+
+    function next() {
+      if (!cursorActive || i >= targets.length) {
+        // Pause then restart
+        cursorTimeout = setTimeout(function() {
+          if (cursorActive) runCursorLoop();
+        }, 2000);
+        return;
+      }
+      var target = targets[i];
+      moveCursorTo(target, function() {
+        if (!cursorActive) return;
+        highlightEl(target);
+        i++;
+        cursorTimeout = setTimeout(next, 1200);
+      });
+    }
+    next();
+  }
+
+  function startCursor() {
+    if (cursorActive) return;
+    cursorActive = true;
+    // Position cursor at center initially
+    cardCursor.style.left = '50%';
+    cardCursor.style.top = '60%';
+    cardCursor.style.transition = 'none';
+    // Fade in after a beat
+    setTimeout(function() {
+      cardCursor.classList.add('visible');
+      setTimeout(runCursorLoop, 800);
+    }, 600);
+  }
+
+  function stopCursor() {
+    cursorActive = false;
+    cardCursor.classList.remove('visible');
+    if (cursorTimeout) clearTimeout(cursorTimeout);
+    // Remove any lingering highlights
+    var hovers = card.querySelectorAll('.cursor-hover');
+    hovers.forEach(function(h) { h.classList.remove('cursor-hover'); });
+  }
 
   // Touch detection for hint text
   var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
