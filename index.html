@@ -532,18 +532,9 @@ header {
   letter-spacing: 0.03em;
 }
 
-/* CTA button below hero via .card-links reuse */
 .calling-card[data-world="milan"] .card-links {
   justify-content: center;
   gap: 0;
-  margin-bottom: 28px;
-  order: -1;
-  margin-top: 0;
-  margin-bottom: 24px;
-}
-
-.calling-card[data-world="milan"] .card-links {
-  order: 0;
   margin-bottom: 24px;
 }
 
@@ -1101,7 +1092,8 @@ footer p {
   .calling-card[data-world="lisbon"] .card-body { max-width: 100%; }
   .calling-card[data-world="lisbon"] .card-links { margin-bottom: 12px; }
 
-  /* Milan — scale down headline */
+  /* Milan — scale down headline, tighten body spacing */
+  .calling-card[data-world="milan"] .card-body { margin-top: 28px; }
   .calling-card[data-world="milan"] .card-headline { font-size: 19px !important; }
   .calling-card[data-world="milan"] .card-bio { max-width: 100%; }
   .calling-card[data-world="milan"] .card-body-cta { margin-bottom: 16px; }
