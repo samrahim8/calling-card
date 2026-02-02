@@ -387,82 +387,131 @@ header {
 }
 
 /* ========================================
-   LISBON — Literary, single column, left-aligned
-   A narrow reading column, like a book page
+   LISBON — Typographic broadsheet, dense and structured
+   Newspaper-like hierarchy with tight columns
    ======================================== */
 .calling-card[data-world="lisbon"] {
-  background: #F7F3EA;
-  border: 1px solid #1B3A5C;
+  background: #EFEBE2;
+  border: 1px solid #2A2A2A;
   text-align: left;
-  padding: 36px 40px 36px 52px;
+  padding: 28px 32px 24px;
 }
 
 .calling-card[data-world="lisbon"]::before {
-  inset: 5px;
-  border: none;
-  border-bottom: 2px solid #C45633;
-  border-top: 2px solid #C45633;
+  inset: 4px;
+  border: 1px solid rgba(42, 42, 42, 0.15);
   opacity: 1;
 }
 
 .calling-card[data-world="lisbon"] .card-nav {
   margin-bottom: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #2A2A2A;
 }
 
 .calling-card[data-world="lisbon"] .card-input {
-  color: #1B3A5C;
-  caret-color: #C45633;
+  color: #2A2A2A;
+  caret-color: #8B4513;
+  font-size: 12px;
+  letter-spacing: 0.15em;
 }
 
 .calling-card[data-world="lisbon"] .card-input::placeholder {
-  color: rgba(27, 58, 92, 0.2);
+  color: rgba(42, 42, 42, 0.2);
 }
 
 .calling-card[data-world="lisbon"] .card-cta-pill {
-  background: transparent;
-  color: #C45633;
-  border: 1px solid #C45633;
+  background: #2A2A2A;
+  color: #EFEBE2;
+  border: 1px solid #2A2A2A;
+  font-size: 8px;
+  letter-spacing: 0.12em;
 }
 
 .calling-card[data-world="lisbon"] .card-body {
-  margin-top: 28px;
-  max-width: 85%;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "headline headline headline"
+    "rule-h   rule-h   rule-h"
+    "bio      divider  links";
+  gap: 0;
+  flex: 1;
 }
 
 .calling-card[data-world="lisbon"] .card-headline {
-  color: #1B3A5C;
-  font-size: 20px;
-  margin-bottom: 10px;
+  grid-area: headline;
+  color: #2A2A2A;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.calling-card[data-world="lisbon"] .card-rule {
+  grid-area: rule-h;
+  background: #2A2A2A;
+  height: 1px;
+  opacity: 1;
+  margin-bottom: 18px;
 }
 
 .calling-card[data-world="lisbon"] .card-bio {
-  color: #4A5A6A;
-  font-size: 10px;
+  grid-area: bio;
+  color: #3A3A3A;
+  font-size: 9px;
   line-height: 1.9;
+  padding-right: 16px;
+  margin-bottom: 6px;
+}
+
+.calling-card[data-world="lisbon"] .card-body::after {
+  content: '';
+  grid-area: divider;
+  background: rgba(42, 42, 42, 0.2);
+  width: 1px;
+  height: 100%;
 }
 
 .calling-card[data-world="lisbon"] .card-links {
+  grid-area: links;
   flex-direction: column;
   gap: 0;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  padding-left: 16px;
+  align-self: start;
 }
 
 .calling-card[data-world="lisbon"] .card-link-pill {
   background: transparent;
-  color: #1B3A5C;
+  color: #2A2A2A;
   border: none;
-  border-bottom: 1px solid rgba(27, 58, 92, 0.1);
-  padding: 6px 0;
-  font-size: 9px;
+  border-bottom: 1px solid rgba(42, 42, 42, 0.12);
+  padding: 7px 0;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.calling-card[data-world="lisbon"] .card-rule {
-  background: #1B3A5C;
-  opacity: 0.12;
+.calling-card[data-world="lisbon"] .card-link-pill:last-child {
+  border-bottom: none;
 }
 
 .calling-card[data-world="lisbon"] .card-footer-line {
-  color: rgba(27, 58, 92, 0.35);
+  grid-area: auto;
+  color: rgba(42, 42, 42, 0.4);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(42, 42, 42, 0.15);
+  grid-column: 1 / -1;
 }
 
 /* ========================================
@@ -1088,10 +1137,22 @@ footer p {
   .card-bio { font-size: 9px !important; line-height: 1.7 !important; }
   .card-body { margin-top: 20px; }
 
-  /* Lisbon — remove extra left padding on mobile */
-  .calling-card[data-world="lisbon"] { padding: 24px 20px; }
-  .calling-card[data-world="lisbon"] .card-body { max-width: 100%; }
-  .calling-card[data-world="lisbon"] .card-links { margin-bottom: 12px; }
+  /* Lisbon — tighten broadsheet for mobile */
+  .calling-card[data-world="lisbon"] { padding: 20px 18px 18px; }
+  .calling-card[data-world="lisbon"] .card-nav { padding-bottom: 8px; }
+  .calling-card[data-world="lisbon"] .card-headline { font-size: 20px !important; margin-bottom: 10px; }
+  .calling-card[data-world="lisbon"] .card-body {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "headline"
+      "rule-h"
+      "bio"
+      "links";
+    gap: 0;
+  }
+  .calling-card[data-world="lisbon"] .card-body::after { display: none; }
+  .calling-card[data-world="lisbon"] .card-bio { padding-right: 0; margin-bottom: 10px; }
+  .calling-card[data-world="lisbon"] .card-links { padding-left: 0; margin-bottom: 8px; }
 
   /* Milan — scale down headline, tighten body spacing */
   .calling-card[data-world="milan"] .card-body { margin-top: 28px; }
@@ -1314,11 +1375,11 @@ footer p {
   // World data
   var worlds = {
     lisbon: {
-      headline: 'Brand strategist<br>and writer.',
-      bio: 'I help early-stage companies find their voice. Ten years of naming, positioning, and editorial direction for brands people remember.',
-      links: ['Work', 'About', 'Writing', 'Contact'],
+      headline: 'Brand strategist<br>& writer.',
+      bio: 'Ten years of naming, positioning, and editorial direction for early-stage companies. I help brands find their voice — the kind people remember.',
+      links: ['Selected Work', 'About', 'Writing', 'Contact'],
       footer: 'Brooklyn, NY',
-      cta: 'Get in Touch'
+      cta: 'Inquire'
     },
     milan: {
       headline: 'Founder, investor,<br>occasional advisor.',
