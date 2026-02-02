@@ -151,6 +151,15 @@ header {
 }
 
 /* ---- WORLD SELECTOR ---- */
+.world-selector-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--graphite);
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
 .world-selector {
   display: flex;
   justify-content: center;
@@ -1129,7 +1138,8 @@ footer p {
   .calling-card:not([data-world]) { height: 220px; }
   .calling-card:not([data-world]) .card-input { font-size: 18px; }
   .calling-card:not([data-world]) .card-input::placeholder { font-size: 18px; }
-  .card-hint { font-size: 12px; color: rgba(44, 36, 22, 0.4); }
+  .card-hint { font-size: 13px; color: rgba(44, 36, 22, 0.5); animation: hintPulse 2s ease-in-out infinite; }
+  @keyframes hintPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
   /* Card — revealed state */
   .calling-card { padding: 24px 20px; height: 360px; }
@@ -1217,7 +1227,7 @@ footer p {
   <header>
     <div class="wordmark">Calling Card</div>
 
-    <a href="#buy" class="btn">Buy Now</a>
+    <a href="#buy" class="btn">See Pricing</a>
   </header>
 
   <!-- HERO -->
@@ -1225,6 +1235,7 @@ footer p {
     <h1>Every name deserves a homepage.</h1>
     <p>A custom, one-page personal website. One flat price. Done in 5 days.</p>
 
+    <div class="world-selector-label" id="world-selector-label" style="display:none">Each site is designed around a mood.</div>
     <div class="world-selector" id="world-selector" style="display:none">
       <button class="world-tab" data-world="lisbon">1972 Lisbon Bookshop</button>
       <button class="world-tab active" data-world="marrakech">1998 Marrakech Riad</button>
@@ -1262,7 +1273,7 @@ footer p {
       <li>A custom-designed one-page website, built from scratch</li>
       <li>Fully responsive across all devices</li>
       <li>Deployed and live on a URL</li>
-      <li>Headline, bio, what you do, links, contact method, photo placement</li>
+      <li>All your key content sections — headline, bio, links, contact, and photo</li>
       <li>One round of revisions included</li>
       <li>Domain setup guidance (you buy your own domain)</li>
     </ul>
@@ -1297,6 +1308,20 @@ footer p {
 
   <div class="divider"></div>
 
+  <!-- FAQ -->
+  <section>
+    <span class="section-label">Common Questions</span>
+    <h2>Before You Buy</h2>
+    <ul class="deliverables">
+      <li><strong>What if I don't like the design?</strong><br><span style="font-size:13px;color:var(--graphite)">One round of revisions is included. I'll work with you until it feels right.</span></li>
+      <li><strong>Do I own the code?</strong><br><span style="font-size:13px;color:var(--graphite)">Yes, completely. You get the source files and full ownership.</span></li>
+      <li><strong>What do I need to provide?</strong><br><span style="font-size:13px;color:var(--graphite)">Your content — headline, bio, links, and a photo if you'd like one. An intake form guides you through it after purchase.</span></li>
+      <li><strong>Can I see examples?</strong><br><span style="font-size:13px;color:var(--graphite)">The card previews above are representative of the design range. Each site is built from scratch for you — no templates.</span></li>
+    </ul>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- PRICING + CHECKOUT (merged) -->
   <section id="buy" class="form-section">
     <span class="section-label">Pricing</span>
@@ -1304,7 +1329,7 @@ footer p {
 
     <div class="pricing-card">
       <div class="price">$500</div>
-      <div class="price-sub">One custom website. Built from scratch. Delivered in 5 days.</div>
+      <div class="price-sub">Everything you need to go live. Nothing you don't.</div>
 
       <ul class="pricing-includes">
         <li>Custom design, no templates</li>
@@ -1317,9 +1342,7 @@ footer p {
 
       <div class="pricing-rule"></div>
 
-      <div class="pricing-rule"></div>
-
-      <div class="pricing-proof">Spots are limited to maintain quality. You'll receive an intake form after purchase to send over your content.</div>
+      <div class="pricing-proof">I take on a handful of projects each month. You'll receive an intake form after purchase to send over your content.</div>
 
       <a href="https://buy.stripe.com/fZubIVbMAgjc67P6FgcjS00" class="btn checkout-btn pricing-cta">Claim Your Site</a>
       <div class="question-link">
@@ -1431,6 +1454,8 @@ footer p {
     var startWorld = 'marrakech';
 
     // Show world selector
+    document.getElementById('world-selector-label').style.display = 'block';
+    document.getElementById('world-selector-label').classList.add('card-reveal');
     worldSelector.style.display = 'flex';
     worldSelector.classList.add('card-reveal');
 
