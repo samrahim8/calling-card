@@ -1522,11 +1522,14 @@ footer p {
   }
 
   function getCursorTargets() {
+    var currentWorld = card.getAttribute('data-world');
     var targets = [];
     var pills = card.querySelectorAll('.card-link-pill');
     var ctaPill = card.querySelector('.card-cta-pill');
     var bodyCta = card.querySelector('.card-body-cta');
     pills.forEach(function(p) { if (p.offsetParent) targets.push(p); });
+    // Lisbon: only walk the link list, skip CTA
+    if (currentWorld === 'lisbon') return targets;
     if (ctaPill && ctaPill.offsetParent && ctaPill.style.display !== 'none') targets.push(ctaPill);
     if (bodyCta && bodyCta.offsetParent && bodyCta.style.display !== 'none') targets.push(bodyCta);
     return targets;
@@ -1537,8 +1540,11 @@ footer p {
     var targets = getCursorTargets();
     if (targets.length === 0) return;
     var i = 0;
-    // Shuffle targets for variety
-    targets.sort(function() { return Math.random() - 0.5; });
+    var currentWorld = card.getAttribute('data-world');
+    // Lisbon: sequential top-to-bottom; others: shuffle for variety
+    if (currentWorld !== 'lisbon') {
+      targets.sort(function() { return Math.random() - 0.5; });
+    }
 
     function next() {
       if (!cursorActive || i >= targets.length) {
