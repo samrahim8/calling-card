@@ -666,7 +666,7 @@ header {
 
 .calling-card[data-world="marrakech"] .card-rule {
   background: rgba(184, 102, 42, 0.15);
-  margin: 16px 0 10px;
+  margin: 12px 0 8px;
 }
 
 .calling-card[data-world="marrakech"] .card-footer-line {
@@ -1091,18 +1091,24 @@ footer p {
   .calling-card:not([data-world]) .card-input::placeholder { font-size: 16px; }
 
   /* Card — revealed state */
-  .calling-card { padding: 24px 20px; height: 320px; }
-  .card-headline { font-size: 18px !important; }
-  .card-bio { font-size: 10px !important; }
-  .card-body { margin-top: 24px; }
+  .calling-card { padding: 24px 20px; height: 360px; }
+  .card-headline { font-size: 17px !important; }
+  .card-bio { font-size: 9px !important; line-height: 1.7 !important; }
+  .card-body { margin-top: 20px; }
 
   /* Lisbon — remove extra left padding on mobile */
   .calling-card[data-world="lisbon"] { padding: 24px 20px; }
   .calling-card[data-world="lisbon"] .card-body { max-width: 100%; }
+  .calling-card[data-world="lisbon"] .card-links { margin-bottom: 12px; }
 
   /* Milan — scale down headline */
-  .calling-card[data-world="milan"] .card-headline { font-size: 20px !important; }
+  .calling-card[data-world="milan"] .card-headline { font-size: 19px !important; }
   .calling-card[data-world="milan"] .card-bio { max-width: 100%; }
+  .calling-card[data-world="milan"] .card-body-cta { margin-bottom: 16px; }
+
+  /* Marrakech — tighten for longer bio */
+  .calling-card[data-world="marrakech"] .card-links { margin-bottom: 12px; padding-bottom: 12px; }
+  .calling-card[data-world="marrakech"] .card-body { margin-top: 16px; }
 
   /* Sections — tighter padding */
   section { padding: 48px 0; }
