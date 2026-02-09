@@ -793,19 +793,23 @@ section h2 {
 /* ---- WHO THIS IS FOR ---- */
 .audience-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   margin-top: 8px;
 }
 
 .audience-item {
-  padding: 24px 28px 24px 0;
+  padding: 24px 0;
   border-top: 1px solid rgba(139, 115, 85, 0.2);
-  border-bottom: none;
 }
 
-.audience-item:last-child {
-  padding-right: 0;
+.audience-item:nth-child(odd) {
+  padding-right: 28px;
+}
+
+.audience-item:nth-child(even) {
+  padding-left: 28px;
+  border-left: 1px solid rgba(139, 115, 85, 0.2);
 }
 
 .audience-item strong {
@@ -1316,6 +1320,10 @@ footer p {
       <div class="audience-item">
         <strong>Investors</strong>
         <span>Founders look you up before they pitch. Make sure what they find is yours, not someone else's summary of you.</span>
+      </div>
+      <div class="audience-item">
+        <strong>Ambitious Professionals</strong>
+        <span>You're building a reputation. Speaking, writing, shipping side projects. You need a home base before the world catches on.</span>
       </div>
     </div>
   </section>
