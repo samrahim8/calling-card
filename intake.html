@@ -503,6 +503,36 @@ footer p {
   color: var(--graphite);
 }
 
+/* Personal watermark */
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 15vw, 180px);
+  font-weight: 600;
+  color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  /* Embossed/debossed effect */
+  background: linear-gradient(145deg, rgba(44, 36, 22, 0.03), rgba(255, 255, 255, 0.05));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    1px 1px 1px rgba(255, 255, 255, 0.4),
+    -1px -1px 1px rgba(44, 36, 22, 0.08);
+}
+
+.watermark.visible {
+  opacity: 1;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .form-wrapper {
@@ -529,6 +559,7 @@ footer p {
 </head>
 <body>
 
+<div class="watermark" id="watermark"></div>
 <div class="form-wrapper">
   <header>
     <div class="wordmark"><a href="https://callingcard.site">Calling Card</a></div>
@@ -778,6 +809,8 @@ footer p {
   var stepsContainer = document.getElementById('steps-container');
   var successScreen = document.getElementById('success-screen');
   var navButtons = document.getElementById('nav-buttons');
+  var watermark = document.getElementById('watermark');
+  var nameInput = document.getElementById('name');
 
   function updateProgress() {
     var pct = currentStep === 0 ? 0 : (currentStep / totalSteps) * 100;
@@ -806,6 +839,14 @@ footer p {
     var input = steps[n].querySelector('input, textarea');
     if (input) {
       setTimeout(function() { input.focus(); }, 100);
+    }
+
+    // Show watermark after name step
+    if (n > 1 && nameInput.value.trim()) {
+      watermark.textContent = nameInput.value.trim();
+      watermark.classList.add('visible');
+    } else if (n <= 1) {
+      watermark.classList.remove('visible');
     }
   }
 
