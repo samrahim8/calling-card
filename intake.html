@@ -505,24 +505,21 @@ footer p {
 
 /* Personal watermark */
 .watermark {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
+  display: none;
   font-family: 'Playfair Display', serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   font-style: italic;
   color: var(--brass);
   letter-spacing: 0.02em;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 0;
+  margin-bottom: 20px;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
 
 .watermark.visible {
-  opacity: 0.25;
+  display: block;
+  opacity: 0.4;
 }
 
 /* Responsive */
@@ -551,7 +548,6 @@ footer p {
 </head>
 <body>
 
-<div class="watermark" id="watermark"></div>
 <div class="form-wrapper">
   <header>
     <div class="wordmark"><a href="https://callingcard.site">Calling Card</a></div>
@@ -562,6 +558,7 @@ footer p {
   </div>
 
   <div class="steps-container" id="steps-container">
+    <div class="watermark" id="watermark"></div>
 
     <!-- Step 0: Intro -->
     <div class="step active" data-step="0">
