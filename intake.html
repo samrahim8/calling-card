@@ -275,6 +275,121 @@ textarea {
   color: var(--walnut);
 }
 
+/* Photo upload dropzone */
+.dropzone {
+  border: 2px dashed rgba(139, 115, 85, 0.3);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+  border-color: var(--brass);
+  background: rgba(139, 115, 85, 0.03);
+}
+
+.dropzone-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: var(--brass);
+}
+
+.dropzone-text {
+  font-size: 15px;
+  color: var(--walnut);
+  margin-bottom: 8px;
+}
+
+.dropzone-hint {
+  font-size: 13px;
+  color: var(--graphite);
+}
+
+.dropzone input[type="file"] {
+  display: none;
+}
+
+/* Upload states */
+.upload-progress {
+  display: none;
+  padding: 32px 24px;
+  border: 1px solid rgba(139, 115, 85, 0.2);
+}
+
+.upload-progress.active {
+  display: block;
+}
+
+.progress-track {
+  height: 4px;
+  background: rgba(139, 115, 85, 0.15);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--brass);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.upload-status {
+  font-size: 13px;
+  color: var(--graphite);
+}
+
+/* Upload preview */
+.upload-preview {
+  display: none;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid rgba(139, 115, 85, 0.2);
+}
+
+.upload-preview.active {
+  display: flex;
+}
+
+.preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.preview-info {
+  flex: 1;
+}
+
+.preview-name {
+  font-size: 14px;
+  color: var(--walnut);
+  margin-bottom: 4px;
+}
+
+.preview-size {
+  font-size: 12px;
+  color: var(--graphite);
+}
+
+.preview-remove {
+  font-size: 13px;
+  color: var(--oxide);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.preview-remove:hover {
+  color: var(--oxide-deep);
+}
+
 /* Navigation */
 .nav-buttons {
   display: flex;
@@ -505,9 +620,36 @@ footer p {
     <!-- Step 8: Photo -->
     <div class="step" data-step="8">
       <div class="step-number">8 of 14</div>
-      <div class="question">Do you have a photo?</div>
-      <p class="question-hint">Share a link to your headshot via Google Drive, Dropbox, or similar. Make sure I have view access.</p>
-      <input type="url" id="photo" placeholder="https://drive.google.com/...">
+      <div class="question">Upload a photo.</div>
+      <p class="question-hint">A headshot works best. High resolution preferred.</p>
+
+      <input type="hidden" id="photo" value="">
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="file-input" accept="image/*">
+        <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <p class="dropzone-text">Drop your photo here, or click to browse</p>
+        <p class="dropzone-hint">JPG, PNG, or HEIC up to 10MB</p>
+      </div>
+
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-track">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <p class="upload-status" id="upload-status">Uploading...</p>
+      </div>
+
+      <div class="upload-preview" id="upload-preview">
+        <img class="preview-image" id="preview-image" src="" alt="Preview">
+        <div class="preview-info">
+          <p class="preview-name" id="preview-name"></p>
+          <p class="preview-size" id="preview-size"></p>
+        </div>
+        <button type="button" class="preview-remove" id="preview-remove">Remove</button>
+      </div>
+
       <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
     </div>
 
@@ -617,6 +759,8 @@ footer p {
 <script>
 (function() {
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz8t0rEiP9AlASDdnpy_39ZZd3nAnQRn-MPafT8sYwb3t2WZnHbVgi-vedWKtjw8sOPyg/exec';
+  var CLOUDINARY_CLOUD = 'samrahim';
+  var CLOUDINARY_PRESET = 'Calling Card';
 
   var steps = document.querySelectorAll('.step');
   var totalSteps = steps.length - 1; // Exclude intro
@@ -739,6 +883,112 @@ footer p {
       });
       opt.classList.add('selected');
     });
+  });
+
+  // Photo upload handling
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('file-input');
+  var uploadProgress = document.getElementById('upload-progress');
+  var progressBarFill = document.getElementById('progress-bar-fill');
+  var uploadStatus = document.getElementById('upload-status');
+  var uploadPreview = document.getElementById('upload-preview');
+  var previewImage = document.getElementById('preview-image');
+  var previewName = document.getElementById('preview-name');
+  var previewSize = document.getElementById('preview-size');
+  var previewRemove = document.getElementById('preview-remove');
+  var photoInput = document.getElementById('photo');
+
+  function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function uploadToCloudinary(file) {
+    dropzone.style.display = 'none';
+    uploadProgress.classList.add('active');
+    progressBarFill.style.width = '0%';
+    uploadStatus.textContent = 'Uploading...';
+
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload');
+
+    xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        var pct = Math.round((e.loaded / e.total) * 100);
+        progressBarFill.style.width = pct + '%';
+        uploadStatus.textContent = 'Uploading... ' + pct + '%';
+      }
+    };
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        photoInput.value = response.secure_url;
+
+        // Show preview
+        uploadProgress.classList.remove('active');
+        uploadPreview.classList.add('active');
+        previewImage.src = response.secure_url;
+        previewName.textContent = file.name;
+        previewSize.textContent = formatFileSize(file.size);
+      } else {
+        uploadStatus.textContent = 'Upload failed. Please try again.';
+        setTimeout(function() {
+          uploadProgress.classList.remove('active');
+          dropzone.style.display = 'block';
+        }, 2000);
+      }
+    };
+
+    xhr.onerror = function() {
+      uploadStatus.textContent = 'Upload failed. Please try again.';
+      setTimeout(function() {
+        uploadProgress.classList.remove('active');
+        dropzone.style.display = 'block';
+      }, 2000);
+    };
+
+    xhr.send(formData);
+  }
+
+  dropzone.addEventListener('click', function() {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files && fileInput.files[0]) {
+      uploadToCloudinary(fileInput.files[0]);
+    }
+  });
+
+  dropzone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropzone.classList.add('dragover');
+  });
+
+  dropzone.addEventListener('dragleave', function() {
+    dropzone.classList.remove('dragover');
+  });
+
+  dropzone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      uploadToCloudinary(e.dataTransfer.files[0]);
+    }
+  });
+
+  previewRemove.addEventListener('click', function() {
+    photoInput.value = '';
+    previewImage.src = '';
+    uploadPreview.classList.remove('active');
+    dropzone.style.display = 'block';
+    fileInput.value = '';
   });
 
   // Initialize
