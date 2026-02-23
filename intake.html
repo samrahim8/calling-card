@@ -32,8 +32,8 @@
   color: var(--parchment);
 }
 
-html {
-  scroll-behavior: smooth;
+html, body {
+  height: 100%;
 }
 
 body {
@@ -43,9 +43,11 @@ body {
   font-size: 15px;
   line-height: 1.7;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Linen / laid paper texture overlay */
+/* Linen texture overlay */
 body::before {
   content: '';
   position: fixed;
@@ -71,13 +73,18 @@ a:hover {
   border-bottom-color: var(--oxide-deep);
 }
 
-.container {
+/* Layout */
+.form-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   max-width: 640px;
   margin: 0 auto;
   padding: 0 24px;
+  width: 100%;
 }
 
-/* ---- HEADER ---- */
+/* Header */
 header {
   padding: 32px 0;
   display: flex;
@@ -103,76 +110,79 @@ header {
   color: var(--oxide);
 }
 
-/* ---- INTRO ---- */
-.intro {
-  padding: 32px 0 48px;
-}
-
-.intro h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 16px;
-  color: var(--walnut);
-}
-
-.intro p {
-  font-size: 15px;
-  color: var(--graphite);
-  line-height: 1.8;
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
+/* Progress bar */
+.progress-bar {
+  height: 2px;
   background: rgba(139, 115, 85, 0.2);
-  margin: 0 0 48px;
+  margin-bottom: 48px;
 }
 
-/* ---- FORM ---- */
-.section-label {
+.progress-fill {
+  height: 100%;
+  background: var(--brass);
+  transition: width 0.4s ease;
+}
+
+/* Steps container */
+.steps-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 120px;
+}
+
+/* Individual step */
+.step {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Step number */
+.step-number {
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brass);
-  margin-bottom: 24px;
-  display: block;
+  margin-bottom: 16px;
 }
 
-.form-section {
-  margin-bottom: 56px;
-}
-
-.form-group {
-  margin-bottom: 32px;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--walnut);
-  margin-bottom: 8px;
-}
-
-.label-hint {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--graphite);
+/* Question */
+.question {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.3;
   margin-bottom: 12px;
-  line-height: 1.6;
+  color: var(--walnut);
 }
 
+.question-hint {
+  font-size: 14px;
+  color: var(--graphite);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* Inputs */
 input, textarea {
   width: 100%;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--walnut);
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(139, 115, 85, 0.3);
-  padding: 12px 0;
+  border-bottom: 2px solid rgba(139, 115, 85, 0.3);
+  padding: 16px 0;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -186,389 +196,521 @@ input::placeholder, textarea::placeholder {
 }
 
 textarea {
-  resize: vertical;
+  resize: none;
   min-height: 120px;
+  line-height: 1.6;
 }
 
-.optional-tag {
+/* Multi-input row */
+.input-row {
+  display: flex;
+  gap: 24px;
+}
+
+.input-row .input-group {
+  flex: 1;
+}
+
+.input-group label {
+  display: block;
   font-size: 11px;
-  color: var(--graphite);
-  font-weight: 400;
-  margin-left: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 8px;
 }
 
-/* Social links grid */
-.social-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+.input-group input {
+  font-size: 16px;
 }
 
-.social-grid .form-group {
-  margin-bottom: 0;
-}
-
-.social-grid label {
-  font-size: 13px;
-}
-
-/* Radio group */
-.radio-group {
+/* Radio options */
+.radio-options {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 8px;
 }
 
 .radio-option {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid rgba(139, 115, 85, 0.25);
   cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
-.radio-option input[type="radio"] {
-  width: auto;
-  margin-top: 4px;
-  accent-color: var(--oxide);
+.radio-option:hover {
+  border-color: var(--brass);
 }
 
-.radio-option span {
-  font-size: 14px;
-  line-height: 1.5;
+.radio-option.selected {
+  border-color: var(--oxide);
+  background: rgba(166, 93, 63, 0.05);
 }
 
-/* Submit */
+.radio-option input {
+  display: none;
+}
+
+.radio-circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--brass);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.radio-option.selected .radio-circle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: var(--oxide);
+  border-radius: 50%;
+}
+
+.radio-label {
+  font-size: 15px;
+  color: var(--walnut);
+}
+
+/* Navigation */
+.nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, var(--parchment) 80%, transparent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
 .btn {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--brass);
-  color: var(--parchment);
   border: none;
-  padding: 16px 40px;
+  padding: 14px 32px;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.15s;
-  display: inline-block;
-  text-decoration: none;
+  transition: background-color 0.2s, transform 0.15s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.btn:hover {
+.btn-primary {
+  background: var(--brass);
+  color: var(--parchment);
+}
+
+.btn-primary:hover {
   background: var(--oxide-deep);
   transform: translateY(-1px);
 }
 
-.btn:active {
-  transform: translateY(0);
+.btn-back {
+  background: transparent;
+  color: var(--graphite);
+  padding-left: 0;
 }
 
-.form-submit {
-  padding: 24px 0 80px;
+.btn-back:hover {
+  color: var(--walnut);
 }
 
-/* Success message */
-.success-message {
+.btn-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Press Enter hint */
+.enter-hint {
+  font-size: 12px;
+  color: var(--graphite);
+  margin-top: 24px;
+}
+
+.enter-hint kbd {
+  font-family: inherit;
+  background: rgba(139, 115, 85, 0.1);
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin: 0 2px;
+}
+
+/* Success */
+.success-screen {
   display: none;
-  padding: 48px 0 80px;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 80px;
 }
 
-.success-message h2 {
+.success-screen.active {
+  display: flex;
+}
+
+.success-screen h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 600;
   margin-bottom: 16px;
   color: var(--walnut);
 }
 
-.success-message p {
-  font-size: 15px;
+.success-screen p {
+  font-size: 16px;
   color: var(--graphite);
   line-height: 1.8;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.success-message .typewriter {
-  display: inline;
-}
-
-/* ---- FOOTER ---- */
+/* Footer */
 footer {
-  padding: 32px 0;
-  border-top: 1px solid rgba(139, 115, 85, 0.15);
+  padding: 24px;
+  text-align: center;
 }
 
 footer p {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--graphite);
 }
 
-/* ---- RESPONSIVE ---- */
+/* Responsive */
 @media (max-width: 640px) {
-  .container {
-    padding-left: max(24px, env(safe-area-inset-left));
-    padding-right: max(24px, env(safe-area-inset-right));
+  .form-wrapper {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
   }
 
   body::before { opacity: 0.2; }
 
-  .intro h1 { font-size: 28px; }
-
-  .social-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+  .question { font-size: 24px; }
 
   input, textarea { font-size: 16px; }
 
-  footer {
-    padding-bottom: max(32px, calc(32px + env(safe-area-inset-bottom)));
+  .input-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nav-buttons {
+    padding-bottom: max(24px, calc(24px + env(safe-area-inset-bottom)));
+  }
+
+  .steps-container {
+    justify-content: flex-start;
+    padding-top: 20px;
   }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-  <!-- HEADER -->
+<div class="form-wrapper">
   <header>
     <div class="wordmark"><a href="https://callingcard.site">Calling Card</a></div>
   </header>
 
-  <!-- INTRO -->
-  <section class="intro">
-    <h1>Let's build your site.</h1>
-    <p>This form collects everything I need to design your Calling Card. Take your time — the more detail you provide, the better your site will be. Most people finish in 10-15 minutes.</p>
-  </section>
-
-  <div class="divider"></div>
-
-  <form id="intake-form">
-
-    <!-- BASICS -->
-    <div class="form-section">
-      <span class="section-label">The Basics</span>
-
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" placeholder="As you'd like it to appear on your site" required>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required>
-      </div>
-
-      <div class="form-group">
-        <label for="headline">Headline</label>
-        <p class="label-hint">The first thing people see. Could be your title, a short description, or a statement. Keep it to one line.</p>
-        <input type="text" id="headline" name="headline" placeholder="e.g. Founder & CEO, Acme Corp" required>
-      </div>
-    </div>
-
-    <!-- ABOUT YOU -->
-    <div class="form-section">
-      <span class="section-label">About You</span>
-
-      <div class="form-group">
-        <label for="bio">Bio</label>
-        <p class="label-hint">A few sentences about your professional background. What do you do? What have you done? What are you known for?</p>
-        <textarea id="bio" name="bio" placeholder="Tell me about your work and career" required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="personal">Life Outside Work</label>
-        <p class="label-hint">What do you do when you're not working? Hobbies, interests, where you live, family — whatever feels right to share. This helps make your site feel human.</p>
-        <textarea id="personal" name="personal" placeholder="e.g. Based in Austin. Weekend cyclist, mediocre golfer, dad of two."></textarea>
-      </div>
-    </div>
-
-    <!-- LINKS -->
-    <div class="form-section">
-      <span class="section-label">Links</span>
-
-      <div class="social-grid">
-        <div class="form-group">
-          <label for="linkedin">LinkedIn <span class="optional-tag">optional</span></label>
-          <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/...">
-        </div>
-        <div class="form-group">
-          <label for="twitter">X / Twitter <span class="optional-tag">optional</span></label>
-          <input type="url" id="twitter" name="twitter" placeholder="x.com/...">
-        </div>
-        <div class="form-group">
-          <label for="instagram">Instagram <span class="optional-tag">optional</span></label>
-          <input type="url" id="instagram" name="instagram" placeholder="instagram.com/...">
-        </div>
-      </div>
-
-      <div class="form-group" style="margin-top: 32px;">
-        <label for="other-links">Other Links <span class="optional-tag">optional</span></label>
-        <p class="label-hint">Portfolio, company website, podcast, Substack, anything else you want to link to.</p>
-        <textarea id="other-links" name="other_links" placeholder="One link per line, with a label if helpful:&#10;&#10;My Company — https://example.com&#10;My Newsletter — https://newsletter.example.com" style="min-height: 100px;"></textarea>
-      </div>
-    </div>
-
-    <!-- PHOTO -->
-    <div class="form-section">
-      <span class="section-label">Photo</span>
-
-      <div class="form-group">
-        <label for="photo">Photo Link</label>
-        <p class="label-hint">Share a link to your headshot or photo via Google Drive, Dropbox, or similar. Make sure I have view access. A high-resolution image works best.</p>
-        <input type="url" id="photo" name="photo" placeholder="https://drive.google.com/...">
-      </div>
-    </div>
-
-    <!-- CONTACT -->
-    <div class="form-section">
-      <span class="section-label">Contact</span>
-
-      <div class="form-group">
-        <label>How should visitors contact you?</label>
-        <p class="label-hint">This determines what contact method appears on your site.</p>
-        <div class="radio-group">
-          <label class="radio-option">
-            <input type="radio" name="contact_method" value="email" checked>
-            <span>Email (I'll display your email address)</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="contact_method" value="form">
-            <span>Contact form (visitors fill out a form, you get an email)</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="contact_method" value="link">
-            <span>A link (Calendly, Twitter DMs, etc.)</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group" id="contact-detail-group">
-        <label for="contact-detail">Contact Details</label>
-        <p class="label-hint">Depending on your choice above: your email address, or the link you want to use.</p>
-        <input type="text" id="contact-detail" name="contact_detail" placeholder="you@example.com or https://calendly.com/...">
-      </div>
-    </div>
-
-    <!-- DOMAIN -->
-    <div class="form-section">
-      <span class="section-label">Domain</span>
-
-      <div class="form-group">
-        <label>Do you have a domain?</label>
-        <p class="label-hint">Your site will be deployed to a URL. You can use your own domain (like yourname.com) or I can provide a subdomain.</p>
-        <div class="radio-group">
-          <label class="radio-option">
-            <input type="radio" name="domain_status" value="have" checked>
-            <span>I have a domain (or will buy one)</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="domain_status" value="need_help">
-            <span>I need guidance on getting a domain</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="domain_status" value="subdomain">
-            <span>Just use a subdomain for now</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group" id="domain-name-group">
-        <label for="domain-name">Domain Name <span class="optional-tag">if you have one</span></label>
-        <input type="text" id="domain-name" name="domain_name" placeholder="yourname.com">
-      </div>
-    </div>
-
-    <!-- DIRECTION -->
-    <div class="form-section">
-      <span class="section-label">Direction</span>
-
-      <div class="form-group">
-        <label for="inspiration">Design Inspiration <span class="optional-tag">optional</span></label>
-        <p class="label-hint">Any sites you admire, aesthetic preferences, or direction you have in mind. Links, descriptions, vibes — all helpful.</p>
-        <textarea id="inspiration" name="inspiration" placeholder="e.g. I like clean and minimal. Here are a few sites I like: ..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="interactive">Custom Interactive Element</label>
-        <p class="label-hint">Each Calling Card includes one bespoke interactive element — a career timeline, investment calculator, easter egg, or something unique to you. Any ideas? If not, I'll propose something.</p>
-        <textarea id="interactive" name="interactive" placeholder="e.g. A timeline of my career would be cool. Or maybe an easter egg that reveals my hobby..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="anything-else">Anything Else? <span class="optional-tag">optional</span></label>
-        <textarea id="anything-else" name="anything_else" placeholder="Anything I should know that wasn't covered above"></textarea>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="form-submit">
-      <button type="submit" class="btn">Submit</button>
-    </div>
-  </form>
-
-  <!-- SUCCESS -->
-  <div class="success-message" id="success">
-    <h2>Got it.</h2>
-    <p>Thanks for filling this out. I'll get started on your site and you'll hear from me within <span class="typewriter" id="typewriter"></span></p>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
   </div>
 
+  <div class="steps-container" id="steps-container">
+
+    <!-- Step 0: Intro -->
+    <div class="step active" data-step="0">
+      <div class="question">Let's build your site.</div>
+      <p class="question-hint">I'll ask you a few questions to gather what I need. Takes about 10 minutes. Skip anything you're not sure about — I'll figure it out and make something good.</p>
+      <p class="enter-hint">Press <kbd>Enter</kbd> to start</p>
+    </div>
+
+    <!-- Step 1: Name -->
+    <div class="step" data-step="1">
+      <div class="step-number">1 of 14</div>
+      <div class="question">What's your name?</div>
+      <p class="question-hint">As you'd like it to appear on your site.</p>
+      <input type="text" id="name" placeholder="Your name" autocomplete="name">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 2: Email -->
+    <div class="step" data-step="2">
+      <div class="step-number">2 of 14</div>
+      <div class="question">What's your email?</div>
+      <p class="question-hint">I'll use this to send you updates and your finished site.</p>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 3: Headline -->
+    <div class="step" data-step="3">
+      <div class="step-number">3 of 14</div>
+      <div class="question">What's your headline?</div>
+      <p class="question-hint">The first thing people see. Could be your title, a short description, or a statement.</p>
+      <input type="text" id="headline" placeholder="e.g. Founder & CEO, Acme Corp">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 4: Bio -->
+    <div class="step" data-step="4">
+      <div class="step-number">4 of 14</div>
+      <div class="question">Tell me about your work.</div>
+      <p class="question-hint">A few sentences about your professional background. What do you do? What have you done? What are you known for?</p>
+      <textarea id="bio" placeholder="Your professional bio..."></textarea>
+      <p class="enter-hint">Press <kbd>Cmd + Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 5: Personal -->
+    <div class="step" data-step="5">
+      <div class="step-number">5 of 14</div>
+      <div class="question">What about life outside work?</div>
+      <p class="question-hint">Hobbies, interests, where you live, family — whatever feels right. This helps make your site feel human.</p>
+      <textarea id="personal" placeholder="e.g. Based in Austin. Weekend cyclist, mediocre golfer, dad of two."></textarea>
+      <p class="enter-hint">Press <kbd>Cmd + Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 6: Social Links -->
+    <div class="step" data-step="6">
+      <div class="step-number">6 of 14</div>
+      <div class="question">Where can people find you online?</div>
+      <p class="question-hint">Add any that apply.</p>
+      <div class="input-row">
+        <div class="input-group">
+          <label>LinkedIn</label>
+          <input type="url" id="linkedin" placeholder="linkedin.com/in/...">
+        </div>
+        <div class="input-group">
+          <label>X / Twitter</label>
+          <input type="url" id="twitter" placeholder="x.com/...">
+        </div>
+        <div class="input-group">
+          <label>Instagram</label>
+          <input type="url" id="instagram" placeholder="instagram.com/...">
+        </div>
+      </div>
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 7: Other Links -->
+    <div class="step" data-step="7">
+      <div class="step-number">7 of 14</div>
+      <div class="question">Any other links?</div>
+      <p class="question-hint">Portfolio, company website, podcast, Substack — anything else you want to feature.</p>
+      <textarea id="other_links" placeholder="One per line:&#10;&#10;My Company — https://example.com&#10;Newsletter — https://newsletter.example.com"></textarea>
+      <p class="enter-hint">Press <kbd>Cmd + Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 8: Photo -->
+    <div class="step" data-step="8">
+      <div class="step-number">8 of 14</div>
+      <div class="question">Do you have a photo?</div>
+      <p class="question-hint">Share a link to your headshot via Google Drive, Dropbox, or similar. Make sure I have view access.</p>
+      <input type="url" id="photo" placeholder="https://drive.google.com/...">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 9: Contact Method -->
+    <div class="step" data-step="9">
+      <div class="step-number">9 of 14</div>
+      <div class="question">How should visitors reach you?</div>
+      <p class="question-hint">This determines what contact method appears on your site.</p>
+      <div class="radio-options">
+        <label class="radio-option selected">
+          <input type="radio" name="contact_method" value="email" checked>
+          <span class="radio-circle"></span>
+          <span class="radio-label">Email — display my email address</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="contact_method" value="form">
+          <span class="radio-circle"></span>
+          <span class="radio-label">Contact form — visitors fill out a form</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="contact_method" value="link">
+          <span class="radio-circle"></span>
+          <span class="radio-label">A link — Calendly, Twitter DMs, etc.</span>
+        </label>
+      </div>
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 10: Contact Detail -->
+    <div class="step" data-step="10">
+      <div class="step-number">10 of 14</div>
+      <div class="question">What's your contact info?</div>
+      <p class="question-hint">Your email address or the link you want visitors to use.</p>
+      <input type="text" id="contact_detail" placeholder="you@example.com or https://calendly.com/...">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 11: Domain -->
+    <div class="step" data-step="11">
+      <div class="step-number">11 of 14</div>
+      <div class="question">Do you have a domain?</div>
+      <p class="question-hint">Your site will be deployed to a URL. You can use your own or I can set one up.</p>
+      <div class="radio-options">
+        <label class="radio-option selected">
+          <input type="radio" name="domain_status" value="have" checked>
+          <span class="radio-circle"></span>
+          <span class="radio-label">I have a domain (or will buy one)</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="domain_status" value="need_help">
+          <span class="radio-circle"></span>
+          <span class="radio-label">I need guidance on getting one</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="domain_status" value="subdomain">
+          <span class="radio-circle"></span>
+          <span class="radio-label">Just use a subdomain for now</span>
+        </label>
+      </div>
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 12: Domain Name -->
+    <div class="step" data-step="12">
+      <div class="step-number">12 of 14</div>
+      <div class="question">What's your domain?</div>
+      <p class="question-hint">If you have one or know what you want. Skip if you're not sure yet.</p>
+      <input type="text" id="domain_name" placeholder="yourname.com">
+      <p class="enter-hint">Press <kbd>Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 13: Inspiration -->
+    <div class="step" data-step="13">
+      <div class="step-number">13 of 14</div>
+      <div class="question">Any design inspiration?</div>
+      <p class="question-hint">Sites you admire, aesthetic preferences, vibes you're going for. Links or descriptions both work.</p>
+      <textarea id="inspiration" placeholder="e.g. I like clean and minimal. Here are a few sites I like..."></textarea>
+      <p class="enter-hint">Press <kbd>Cmd + Enter</kbd> to continue</p>
+    </div>
+
+    <!-- Step 14: Interactive Element -->
+    <div class="step" data-step="14">
+      <div class="step-number">14 of 14</div>
+      <div class="question">One last thing.</div>
+      <p class="question-hint">Each Calling Card includes a custom interactive element — a timeline, calculator, easter egg, or something unique to you. Any ideas? If not, I'll propose something.</p>
+      <textarea id="interactive" placeholder="e.g. A career timeline would be cool. Or maybe an easter egg..."></textarea>
+      <p class="enter-hint">Press <kbd>Cmd + Enter</kbd> to submit</p>
+    </div>
+
+  </div>
+
+  <!-- Success Screen -->
+  <div class="success-screen" id="success-screen">
+    <h1>Got it.</h1>
+    <p>Thanks for filling this out. I'll get started on your site and you'll hear from me within 5 business days.</p>
+  </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <p><a href="https://callingcard.site">Calling Card</a> is a product of <a href="https://build.samrahim.com">Sam Rahim's studio</a>.</p>
-  </div>
-</footer>
+<div class="nav-buttons" id="nav-buttons">
+  <button class="btn btn-back" id="btn-back" style="visibility: hidden;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back
+  </button>
+  <button class="btn btn-primary" id="btn-next">Start</button>
+</div>
 
 <script>
 (function() {
-  var form = document.getElementById('intake-form');
-  var success = document.getElementById('success');
-  var typewriter = document.getElementById('typewriter');
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz8t0rEiP9AlASDdnpy_39ZZd3nAnQRn-MPafT8sYwb3t2WZnHbVgi-vedWKtjw8sOPyg/exec';
 
-  // Typewriter effect
-  function typewriterEffect(text, el, speed) {
-    var i = 0;
-    el.textContent = '';
-    function type() {
-      if (i < text.length) {
-        el.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      }
-    }
-    type();
+  var steps = document.querySelectorAll('.step');
+  var totalSteps = steps.length - 1; // Exclude intro
+  var currentStep = 0;
+
+  var progressFill = document.getElementById('progress-fill');
+  var btnBack = document.getElementById('btn-back');
+  var btnNext = document.getElementById('btn-next');
+  var stepsContainer = document.getElementById('steps-container');
+  var successScreen = document.getElementById('success-screen');
+  var navButtons = document.getElementById('nav-buttons');
+
+  function updateProgress() {
+    var pct = currentStep === 0 ? 0 : (currentStep / totalSteps) * 100;
+    progressFill.style.width = pct + '%';
   }
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+  function showStep(n) {
+    steps.forEach(function(s) { s.classList.remove('active'); });
+    steps[n].classList.add('active');
+    currentStep = n;
+    updateProgress();
 
-    // Gather form data
-    var formData = new FormData(form);
+    // Update button text
+    if (n === 0) {
+      btnNext.textContent = 'Start';
+      btnBack.style.visibility = 'hidden';
+    } else if (n === totalSteps) {
+      btnNext.textContent = 'Submit';
+      btnBack.style.visibility = 'visible';
+    } else {
+      btnNext.textContent = 'Continue';
+      btnBack.style.visibility = 'visible';
+    }
+
+    // Focus first input in step
+    var input = steps[n].querySelector('input, textarea');
+    if (input) {
+      setTimeout(function() { input.focus(); }, 100);
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) {
+      showStep(currentStep + 1);
+    } else {
+      submitForm();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      showStep(currentStep - 1);
+    }
+  }
+
+  function submitForm() {
     var data = {
       type: 'intake',
-      name: formData.get('name'),
-      email: formData.get('email'),
-      headline: formData.get('headline'),
-      bio: formData.get('bio'),
-      personal: formData.get('personal'),
-      linkedin: formData.get('linkedin'),
-      twitter: formData.get('twitter'),
-      instagram: formData.get('instagram'),
-      other_links: formData.get('other_links'),
-      photo: formData.get('photo'),
-      contact_method: formData.get('contact_method'),
-      contact_detail: formData.get('contact_detail'),
-      domain_status: formData.get('domain_status'),
-      domain_name: formData.get('domain_name'),
-      inspiration: formData.get('inspiration'),
-      interactive: formData.get('interactive'),
-      anything_else: formData.get('anything_else')
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      headline: document.getElementById('headline').value,
+      bio: document.getElementById('bio').value,
+      personal: document.getElementById('personal').value,
+      linkedin: document.getElementById('linkedin').value,
+      twitter: document.getElementById('twitter').value,
+      instagram: document.getElementById('instagram').value,
+      other_links: document.getElementById('other_links').value,
+      photo: document.getElementById('photo').value,
+      contact_method: document.querySelector('input[name="contact_method"]:checked').value,
+      contact_detail: document.getElementById('contact_detail').value,
+      domain_status: document.querySelector('input[name="domain_status"]:checked').value,
+      domain_name: document.getElementById('domain_name').value,
+      inspiration: document.getElementById('inspiration').value,
+      interactive: document.getElementById('interactive').value
     };
 
     // Fire and forget
@@ -579,20 +721,47 @@ footer p {
       body: JSON.stringify(data)
     });
 
-    // Hide form, show success
-    form.style.display = 'none';
-    document.querySelector('.intro').style.display = 'none';
-    document.querySelector('.divider').style.display = 'none';
-    success.style.display = 'block';
+    // Show success
+    stepsContainer.style.display = 'none';
+    navButtons.style.display = 'none';
+    successScreen.classList.add('active');
+    progressFill.style.width = '100%';
+  }
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Button clicks
+  btnNext.addEventListener('click', nextStep);
+  btnBack.addEventListener('click', prevStep);
 
-    // Typewriter effect
-    setTimeout(function() {
-      typewriterEffect('5 business days.', typewriter, 60);
-    }, 400);
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var active = document.activeElement;
+      var isTextarea = active && active.tagName === 'TEXTAREA';
+
+      // For textareas, require Cmd/Ctrl + Enter
+      if (isTextarea && !(e.metaKey || e.ctrlKey)) {
+        return;
+      }
+
+      e.preventDefault();
+      nextStep();
+    }
   });
+
+  // Radio option styling
+  var radioOptions = document.querySelectorAll('.radio-option');
+  radioOptions.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var name = opt.querySelector('input').name;
+      document.querySelectorAll('input[name="' + name + '"]').forEach(function(r) {
+        r.closest('.radio-option').classList.remove('selected');
+      });
+      opt.classList.add('selected');
+    });
+  });
+
+  // Initialize
+  showStep(0);
 })();
 </script>
 
