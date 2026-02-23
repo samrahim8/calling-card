@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Intake Form — Calling Card</title>
+<meta name="description" content="Tell me about yourself so I can build your Calling Card.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='4' y='6' width='24' height='20' rx='2' fill='%23F5F1E8' stroke='%232C2416' stroke-width='2'/><line x1='10' y1='13' x2='22' y2='13' stroke='%238B7355' stroke-width='1.5'/><line x1='10' y1='17' x2='18' y2='17' stroke='%238B7355' stroke-width='1.5'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --parchment: #F5F1E8;
+  --walnut: #2C2416;
+  --brass: #8B7355;
+  --oxide: #A65D3F;
+  --graphite: #4A4A4A;
+  --oxide-deep: #8B4A30;
+  --cream: #FAF8F3;
+}
+
+::selection {
+  background: var(--oxide);
+  color: var(--parchment);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--parchment);
+  color: var(--walnut);
+  font-size: 15px;
+  line-height: 1.7;
+  position: relative;
+}
+
+/* Linen / laid paper texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='transparent'/%3E%3Cline x1='0' y1='3' x2='6' y2='3' stroke='%232C2416' stroke-width='0.3' opacity='0.15'/%3E%3Cline x1='3' y1='0' x2='3' y2='6' stroke='%232C2416' stroke-width='0.3' opacity='0.1'/%3E%3C/svg%3E");
+}
+
+a {
+  color: var(--oxide);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+a:hover {
+  color: var(--oxide-deep);
+  border-bottom-color: var(--oxide-deep);
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- HEADER ---- */
+header {
+  padding: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wordmark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--walnut);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.wordmark a {
+  color: var(--walnut);
+  border-bottom: none;
+}
+
+.wordmark a:hover {
+  color: var(--oxide);
+}
+
+/* ---- INTRO ---- */
+.intro {
+  padding: 32px 0 48px;
+}
+
+.intro h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--walnut);
+}
+
+.intro p {
+  font-size: 15px;
+  color: var(--graphite);
+  line-height: 1.8;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(139, 115, 85, 0.2);
+  margin: 0 0 48px;
+}
+
+/* ---- FORM ---- */
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.form-section {
+  margin-bottom: 56px;
+}
+
+.form-group {
+  margin-bottom: 32px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--walnut);
+  margin-bottom: 8px;
+}
+
+.label-hint {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--graphite);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+input, textarea {
+  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  color: var(--walnut);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+  padding: 12px 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  border-bottom-color: var(--oxide);
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(44, 36, 22, 0.3);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.optional-tag {
+  font-size: 11px;
+  color: var(--graphite);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+/* Social links grid */
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.social-grid .form-group {
+  margin-bottom: 0;
+}
+
+.social-grid label {
+  font-size: 13px;
+}
+
+/* Radio group */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+  width: auto;
+  margin-top: 4px;
+  accent-color: var(--oxide);
+}
+
+.radio-option span {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Submit */
+.btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--brass);
+  color: var(--parchment);
+  border: none;
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--oxide-deep);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.form-submit {
+  padding: 24px 0 80px;
+}
+
+/* Success message */
+.success-message {
+  display: none;
+  padding: 48px 0 80px;
+}
+
+.success-message h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--walnut);
+}
+
+.success-message p {
+  font-size: 15px;
+  color: var(--graphite);
+  line-height: 1.8;
+}
+
+.success-message .typewriter {
+  display: inline;
+}
+
+/* ---- FOOTER ---- */
+footer {
+  padding: 32px 0;
+  border-top: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+footer p {
+  font-size: 13px;
+  color: var(--graphite);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 640px) {
+  .container {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
+
+  body::before { opacity: 0.2; }
+
+  .intro h1 { font-size: 28px; }
+
+  .social-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  input, textarea { font-size: 16px; }
+
+  footer {
+    padding-bottom: max(32px, calc(32px + env(safe-area-inset-bottom)));
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="wordmark"><a href="https://callingcard.site">Calling Card</a></div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <h1>Let's build your site.</h1>
+    <p>This form collects everything I need to design your Calling Card. Take your time — the more detail you provide, the better your site will be. Most people finish in 10-15 minutes.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <form id="intake-form">
+
+    <!-- BASICS -->
+    <div class="form-section">
+      <span class="section-label">The Basics</span>
+
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="As you'd like it to appear on your site" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="headline">Headline</label>
+        <p class="label-hint">The first thing people see. Could be your title, a short description, or a statement. Keep it to one line.</p>
+        <input type="text" id="headline" name="headline" placeholder="e.g. Founder & CEO, Acme Corp" required>
+      </div>
+    </div>
+
+    <!-- ABOUT YOU -->
+    <div class="form-section">
+      <span class="section-label">About You</span>
+
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        <p class="label-hint">A few sentences about your professional background. What do you do? What have you done? What are you known for?</p>
+        <textarea id="bio" name="bio" placeholder="Tell me about your work and career" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="personal">Life Outside Work</label>
+        <p class="label-hint">What do you do when you're not working? Hobbies, interests, where you live, family — whatever feels right to share. This helps make your site feel human.</p>
+        <textarea id="personal" name="personal" placeholder="e.g. Based in Austin. Weekend cyclist, mediocre golfer, dad of two."></textarea>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="form-section">
+      <span class="section-label">Links</span>
+
+      <div class="social-grid">
+        <div class="form-group">
+          <label for="linkedin">LinkedIn <span class="optional-tag">optional</span></label>
+          <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/...">
+        </div>
+        <div class="form-group">
+          <label for="twitter">X / Twitter <span class="optional-tag">optional</span></label>
+          <input type="url" id="twitter" name="twitter" placeholder="x.com/...">
+        </div>
+        <div class="form-group">
+          <label for="instagram">Instagram <span class="optional-tag">optional</span></label>
+          <input type="url" id="instagram" name="instagram" placeholder="instagram.com/...">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 32px;">
+        <label for="other-links">Other Links <span class="optional-tag">optional</span></label>
+        <p class="label-hint">Portfolio, company website, podcast, Substack, anything else you want to link to.</p>
+        <textarea id="other-links" name="other_links" placeholder="One link per line, with a label if helpful:&#10;&#10;My Company — https://example.com&#10;My Newsletter — https://newsletter.example.com" style="min-height: 100px;"></textarea>
+      </div>
+    </div>
+
+    <!-- PHOTO -->
+    <div class="form-section">
+      <span class="section-label">Photo</span>
+
+      <div class="form-group">
+        <label for="photo">Photo Link</label>
+        <p class="label-hint">Share a link to your headshot or photo via Google Drive, Dropbox, or similar. Make sure I have view access. A high-resolution image works best.</p>
+        <input type="url" id="photo" name="photo" placeholder="https://drive.google.com/...">
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="form-section">
+      <span class="section-label">Contact</span>
+
+      <div class="form-group">
+        <label>How should visitors contact you?</label>
+        <p class="label-hint">This determines what contact method appears on your site.</p>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="contact_method" value="email" checked>
+            <span>Email (I'll display your email address)</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="contact_method" value="form">
+            <span>Contact form (visitors fill out a form, you get an email)</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="contact_method" value="link">
+            <span>A link (Calendly, Twitter DMs, etc.)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" id="contact-detail-group">
+        <label for="contact-detail">Contact Details</label>
+        <p class="label-hint">Depending on your choice above: your email address, or the link you want to use.</p>
+        <input type="text" id="contact-detail" name="contact_detail" placeholder="you@example.com or https://calendly.com/...">
+      </div>
+    </div>
+
+    <!-- DOMAIN -->
+    <div class="form-section">
+      <span class="section-label">Domain</span>
+
+      <div class="form-group">
+        <label>Do you have a domain?</label>
+        <p class="label-hint">Your site will be deployed to a URL. You can use your own domain (like yourname.com) or I can provide a subdomain.</p>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="domain_status" value="have" checked>
+            <span>I have a domain (or will buy one)</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="domain_status" value="need_help">
+            <span>I need guidance on getting a domain</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="domain_status" value="subdomain">
+            <span>Just use a subdomain for now</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" id="domain-name-group">
+        <label for="domain-name">Domain Name <span class="optional-tag">if you have one</span></label>
+        <input type="text" id="domain-name" name="domain_name" placeholder="yourname.com">
+      </div>
+    </div>
+
+    <!-- DIRECTION -->
+    <div class="form-section">
+      <span class="section-label">Direction</span>
+
+      <div class="form-group">
+        <label for="inspiration">Design Inspiration <span class="optional-tag">optional</span></label>
+        <p class="label-hint">Any sites you admire, aesthetic preferences, or direction you have in mind. Links, descriptions, vibes — all helpful.</p>
+        <textarea id="inspiration" name="inspiration" placeholder="e.g. I like clean and minimal. Here are a few sites I like: ..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="interactive">Custom Interactive Element</label>
+        <p class="label-hint">Each Calling Card includes one bespoke interactive element — a career timeline, investment calculator, easter egg, or something unique to you. Any ideas? If not, I'll propose something.</p>
+        <textarea id="interactive" name="interactive" placeholder="e.g. A timeline of my career would be cool. Or maybe an easter egg that reveals my hobby..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="anything-else">Anything Else? <span class="optional-tag">optional</span></label>
+        <textarea id="anything-else" name="anything_else" placeholder="Anything I should know that wasn't covered above"></textarea>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="form-submit">
+      <button type="submit" class="btn">Submit</button>
+    </div>
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-message" id="success">
+    <h2>Got it.</h2>
+    <p>Thanks for filling this out. I'll get started on your site and you'll hear from me within <span class="typewriter" id="typewriter"></span></p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p><a href="https://callingcard.site">Calling Card</a> is a product of <a href="https://build.samrahim.com">Sam Rahim's studio</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var form = document.getElementById('intake-form');
+  var success = document.getElementById('success');
+  var typewriter = document.getElementById('typewriter');
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwlV9X0ZNjcIhSI2dx-yST28bUvNsXcEVK0NFCY-1SjIAYYpKGaDv3ROp2HK6IWZcMpSQ/exec';
+
+  // Typewriter effect
+  function typewriterEffect(text, el, speed) {
+    var i = 0;
+    el.textContent = '';
+    function type() {
+      if (i < text.length) {
+        el.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      }
+    }
+    type();
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Gather form data
+    var formData = new FormData(form);
+    var data = {
+      type: 'intake',
+      name: formData.get('name'),
+      email: formData.get('email'),
+      headline: formData.get('headline'),
+      bio: formData.get('bio'),
+      personal: formData.get('personal'),
+      linkedin: formData.get('linkedin'),
+      twitter: formData.get('twitter'),
+      instagram: formData.get('instagram'),
+      other_links: formData.get('other_links'),
+      photo: formData.get('photo'),
+      contact_method: formData.get('contact_method'),
+      contact_detail: formData.get('contact_detail'),
+      domain_status: formData.get('domain_status'),
+      domain_name: formData.get('domain_name'),
+      inspiration: formData.get('inspiration'),
+      interactive: formData.get('interactive'),
+      anything_else: formData.get('anything_else')
+    };
+
+    // Fire and forget
+    fetch(ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+
+    // Hide form, show success
+    form.style.display = 'none';
+    document.querySelector('.intro').style.display = 'none';
+    document.querySelector('.divider').style.display = 'none';
+    success.style.display = 'block';
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Typewriter effect
+    setTimeout(function() {
+      typewriterEffect('5 business days.', typewriter, 60);
+    }, 400);
+  });
+})();
+</script>
+
+</body>
+</html>
