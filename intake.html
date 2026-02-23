@@ -125,11 +125,7 @@ header {
 
 /* Steps container */
 .steps-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-bottom: 120px;
+  padding: 60px 0 80px;
 }
 
 /* Individual step */
@@ -281,17 +277,10 @@ textarea {
 
 /* Navigation */
 .nav-buttons {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 24px;
-  background: linear-gradient(to top, var(--parchment) 80%, transparent);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 640px;
-  margin: 0 auto;
+  margin-top: 40px;
 }
 
 .btn {
@@ -358,15 +347,12 @@ textarea {
 /* Success */
 .success-screen {
   display: none;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
   text-align: center;
-  padding-bottom: 80px;
+  padding: 80px 0;
 }
 
 .success-screen.active {
-  display: flex;
+  display: block;
 }
 
 .success-screen h1 {
@@ -414,13 +400,8 @@ footer p {
     gap: 20px;
   }
 
-  .nav-buttons {
-    padding-bottom: max(24px, calc(24px + env(safe-area-inset-bottom)));
-  }
-
   .steps-container {
-    justify-content: flex-start;
-    padding-top: 20px;
+    padding: 40px 0 60px;
   }
 }
 </style>
@@ -618,19 +599,19 @@ footer p {
 
   </div>
 
-  <!-- Success Screen -->
-  <div class="success-screen" id="success-screen">
-    <h1>Got it.</h1>
-    <p>Thanks for filling this out. I'll get started on your site and you'll hear from me within 5 business days.</p>
-  </div>
-</div>
-
-<div class="nav-buttons" id="nav-buttons">
+  <div class="nav-buttons" id="nav-buttons">
   <button class="btn btn-back" id="btn-back" style="visibility: hidden;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back
   </button>
   <button class="btn btn-primary" id="btn-next">Start</button>
+  </div>
+
+  <!-- Success Screen -->
+  <div class="success-screen" id="success-screen">
+    <h1>Got it.</h1>
+    <p>Thanks for filling this out. I'll get started on your site and you'll hear from me within 5 business days.</p>
+  </div>
 </div>
 
 <script>
